@@ -44,7 +44,7 @@ def _gcm_send(data, content_type):
 	}
 
 	request = Request(SETTINGS["GCM_POST_URL"], data, headers)
-	return urlopen(request).read()
+	return urlopen(request).read().decode('utf-8')
 
 
 def _gcm_send_plain(registration_id, data, collapse_key=None, delay_while_idle=False, time_to_live=0):
@@ -72,7 +72,7 @@ def _gcm_send_plain(registration_id, data, collapse_key=None, delay_while_idle=F
 	data = urlencode(sorted(values.items())).encode("utf-8")  # sorted items for tests
 
 	result = _gcm_send(data, "application/x-www-form-urlencoded;charset=UTF-8")
-	if result.startswith("Error="):
+	if result.decode('utf-8').startswith("Error="):
 		raise GCMError(result)
 	return result
 
